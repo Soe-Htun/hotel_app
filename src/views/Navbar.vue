@@ -2,7 +2,7 @@
     <div>
         <b-navbar fixed="top" toggleable="lg" type="dark" variant="dark">
             <b-navbar-brand href="#">
-                <i class="fas fa-hotel">Hotel App</i>
+                <i class="fas fa-hotel"></i>Hotel App
             </b-navbar-brand>
         </b-navbar>
         <b-navbar-toggle id="nav-collapse">
@@ -17,3 +17,82 @@
         </b-collapse>
     </div>
 </template>
+
+<script>
+import {db} from 'firebase'
+import Swal from 'sweetalert2'
+export default {
+    name:'navbar',
+    data() {
+        return {
+            form:{
+                reservationid:'',
+                message:'',
+                room: null,
+                email:''
+            },
+            rooms:[
+                {text:"Select One", value:null},
+                "Single",
+                "Double",
+                "Family",
+                "Deluxe"
+            ],
+            color:'',
+            title:'',
+            show:false,
+            reservation:{
+                id:'',
+                name:'',
+                email:'',
+                day:'',
+                price:''
+            },
+            admin:{
+                user:'edward',
+                pass:'456789'
+            },
+            admininput:{
+                user:'',
+                pass:''
+            }
+        }
+    },
+    methods:{
+        onSubmit2(evt){
+            this.show =false;
+            evt.preventDefault();
+            switch(this.title){
+                case 'Cancel Reservation':
+                db.collection(this.form.room)
+                .doc(this.form.reservationid)
+                .delete()
+                .then(()=>{
+                    this.$bvModal.hide('my-modal2')
+                    Swal.fire({
+                        icon:'success',
+                        title:'Reservation Canceled'
+                    })
+                })
+                .catch(()=>{
+                    console.log('Error');
+                });
+                break;
+                
+            }
+        }
+    }
+}
+</script>
+
+<style scoped>
+i{
+    color: orange;
+}
+button:hover{
+    background-color: orange;
+}
+button:hover > i{
+    color: white;
+}
+</style>>
